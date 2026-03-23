@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolgani - Mangesh Padagavkar | Lumina Books</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            padding: 160px 0 80px;
+            align-items: start;
+        }
+
+        .detail-visual {
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 140px;
+        }
+
+        .detail-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .detail-header h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .author-name {
+            font-size: 1.2rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .detail-price-box {
+            background: rgba(48, 56, 84, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            display: inline-flex;
+            gap: 2rem;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .spec-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid rgba(48, 56, 84, 0.05);
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .spec-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+        }
+
+        .spec-value {
+            font-weight: 700;
+            color: var(--secondary-text);
+        }
+
+        .book-info-text {
+            color: rgba(48, 56, 84, 0.8);
+            line-height: 1.8;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: none;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: var(--secondary-text);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(48, 56, 84, 0.2);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--secondary-text);
+            color: var(--secondary-text);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: rgba(48, 56, 84, 0.05);
+        }
+
+        @media (max-width: 1024px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                padding-top: 150px;
+            }
+
+            .detail-visual {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        /* Ensure header has a background on white pages */
+        
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="nav-overlay" id="nav-overlay"></div>
+        <div class="container nav-wrapper">
+            <a href="index.html" class="logo">Lumina <span>Books</span></a>
+            <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"
+                aria-controls="site-nav"><span></span></button>
+            <nav id="site-nav" class="nav-links" role="navigation">
+                <a href="index.html">Home</a>
+                <a href="#">Collection</a>
+                <a href="#">Contact</a>
+                <a href="cart.html" class="cart-link">Cart</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="detail-grid">
+            <div class="detail-visual">
+                <div class="book-wrapper" style="width: 320px; height: 460px;">
+                    <div class="book" id="bolgani">
+                        <div class="book-face front" style="transform: translateZ(25px);"><img
+                                src="https://www.bookganga.com/Preview/previewimage.aspx?ImagePath=zlqigBSMr7QorfWiTG5ByoWppKW7lA1S%2fp0UweYT7W%2bah7kWB8yxEMG5Cz7HMSeV"
+                                alt="Bolgani">
+                        </div>
+                        <div class="book-face spine" style="width: 50px; left: -25px; font-size: 14px;">
+                            Bolgani - M. Padagavkar
+                        </div>
+                        <div class="book-face back" style="transform: rotateY(180deg) translateZ(25px);"><img
+                                src="https://www.bookganga.com/Preview/previewimage.aspx?ImagePath=zlqigBSMr7QorfWiTG5ByoWppKW7lA1S%2fp0UweYT7W%2buCnPGakn3N7QbktZUOW4n"
+                                alt="Back Cover">
+                        </div>
+                        <div class="pages" style="width: 49px; right: -25px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-content">
+                <div class="detail-header">
+                    <h1>Bolgani</h1>
+                    <p class="author-name">by Mangesh Padagavkar</p>
+                </div>
+
+                <div class="detail-price-box">
+                    <div class="spec-item">
+                        <span class="spec-label">MRP</span>
+                        <span class="spec-value" style="text-decoration: line-through; opacity: 0.5;">₹200</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Sale Price</span>
+                        <span class="spec-value" style="font-size: 1.8rem; color: var(--accent-gold);">₹100</span>
+                    </div>
+                </div>
+
+                <ul class="spec-list">
+                    <li class="spec-item">
+                        <span class="spec-label">Language</span>
+                        <span class="spec-value">Marathi</span>
+                    </li>
+                    <li class="spec-item">
+                        <span class="spec-label">Condition</span>
+                        <span class="spec-value">Good</span>
+                    </li>
+                    <li class="spec-item">
+                        <span class="spec-label">Pages</span>
+                        <span class="spec-value">120</span>
+                    </li>
+                    <li class="spec-item">
+                        <span class="spec-label">Category</span>
+                        <span class="spec-value">Poetry</span>
+                    </li>
+                </ul>
+
+                <div class="book-info">
+                    <h3 style="margin-bottom: 0.5rem;">Book Information</h3>
+                    <p class="book-info-text">
+                        "Bolgani" is a celebrated collection of Marathi poetry that captures the essence of human
+                        emotions,
+                        nature, and social consciousness. Mangesh Padagavkar, one of the most beloved Marathi poets,
+                        delivers verses that resonate with both simplicity and profound depth. Experience the signature
+                        rhythm
+                        and lyrical beauty of contemporary Marathi literature.
+                    </p>
+                </div>
+
+                <div class="action-buttons">
+                    <button id="add-to-cart" class="btn btn-outline">Add to Cart</button>
+                    <button id="buy-now" class="btn btn-primary">Buy it now</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container"><a href="index.html" class="footer-logo">Lumina<span>Books</span></a>
+            <p>© 2024 Lumina Books. Curated Marathi Art and Literature.</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">Premium 3D Book Experience</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
