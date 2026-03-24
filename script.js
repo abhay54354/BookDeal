@@ -117,38 +117,30 @@
         heroShelf.addEventListener('mouseleave', () => { autoplay = setInterval(next, 4200); });
 
         // Touch swipe support for mobile: detect horizontal swipes
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchDeltaX = 0;
-        const SWIPE_THRESHOLD = 40; // pixels
+        let startX = 0;
+        let endX = 0;
 
-        heroShelf.addEventListener('touchstart', (e) => {
-            if (e.touches && e.touches.length === 1) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-                touchDeltaX = 0;
-                clearInterval(autoplay);
-            }
-        }, { passive: true });
+        wrappers.forEach(wrapper => {
+            const book = wrapper.querySelector('.book');
+            if (!book) return;
 
-        heroShelf.addEventListener('touchmove', (e) => {
-            if (e.touches && e.touches.length === 1) {
-                touchDeltaX = e.touches[0].clientX - touchStartX;
-            }
-        }, { passive: true });
+            wrapper.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
 
-        heroShelf.addEventListener('touchend', (e) => {
-            const deltaX = touchDeltaX;
-            const deltaY = (e.changedTouches && e.changedTouches[0]) ? Math.abs(e.changedTouches[0].clientY - touchStartY) : 0;
-            if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaY < 80) {
-                if (deltaX > 0) prev(); else next();
-            }
-            // restart autoplay after interaction
-            clearInterval(autoplay);
-            autoplay = setInterval(next, 4200);
+            wrapper.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+
+                let diff = endX - startX;
+
+                // swipe threshold (important)
+                if (Math.abs(diff) > 40) {
+                    book.classList.toggle('show-back');
+                }
+            });
         });
     }
-})(); 
+})();
 
 
 // Simple cart and add-to-cart functionality (localStorage)------------------------------------------------
