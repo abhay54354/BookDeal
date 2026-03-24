@@ -367,9 +367,6 @@ header.scrolled {
     margin-bottom: 30px;
     position: relative;
     cursor: pointer;
-}
-
-.book-wrapper {
     touch-action: pan-y;
 }
 
