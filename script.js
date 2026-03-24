@@ -1,15 +1,44 @@
-// Toggle book flip on click/tap ONLY on the book model
+// Mobile swipe + desktop click flip
 (function () {
     const wrappers = document.querySelectorAll('.book-wrapper');
+
     wrappers.forEach(wrapper => {
         const book = wrapper.querySelector('.book');
         if (!book) return;
 
+        let startX = 0;
+        let startY = 0;
+        let isTouch = false;
+
+        // TOUCH START
+        wrapper.addEventListener('touchstart', (e) => {
+            isTouch = true;
+            const t = e.touches[0];
+            startX = t.clientX;
+            startY = t.clientY;
+        }, { passive: true });
+
+        // TOUCH END (SWIPE)
+        wrapper.addEventListener('touchend', (e) => {
+            const t = e.changedTouches[0];
+            let diffX = t.clientX - startX;
+            let diffY = t.clientY - startY;
+
+            if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+                book.classList.toggle('show-back');
+            }
+        });
+
+        // DESKTOP CLICK (ignore if touch already happened)
         wrapper.addEventListener('click', (e) => {
-            e.stopPropagation();
+            if (isTouch) {
+                isTouch = false;
+                return;
+            }
             book.classList.toggle('show-back');
         });
 
+        // KEYBOARD
         wrapper.setAttribute('tabindex', '0');
         wrapper.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
@@ -19,19 +48,17 @@
         });
     });
 
-    // Robust Scrolled header effect
+    // header scroll
     function updateHeader() {
         const header = document.getElementById('header');
         if (!header) return;
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollPos > 40) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
+        if (scrollPos > 40) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
     }
+
     window.addEventListener('scroll', updateHeader, { passive: true });
-    updateHeader(); // initial check
+    updateHeader();
 })();
 
 
@@ -116,55 +143,7 @@
         heroShelf.addEventListener('mouseenter', () => clearInterval(autoplay));
         heroShelf.addEventListener('mouseleave', () => { autoplay = setInterval(next, 4200); });
     }
-})();
-
-(function () {
-    const wrappers = document.querySelectorAll('.book-wrapper');
-
-    wrappers.forEach(wrapper => {
-        const book = wrapper.querySelector('.book');
-        if (!book) return;
-
-        let startX = 0;
-        let startY = 0;
-
-        // TOUCH START
-        wrapper.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            startX = touch.clientX;
-            startY = touch.clientY;
-        }, { passive: true });
-
-        // TOUCH END
-        wrapper.addEventListener('touchend', (e) => {
-            const touch = e.changedTouches[0];
-
-            let diffX = touch.clientX - startX;
-            let diffY = touch.clientY - startY;
-
-            // only horizontal swipe
-            if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
-                book.classList.toggle('show-back');
-            }
-        });
-
-        // OPTIONAL: keyboard support (desktop)
-        wrapper.setAttribute('tabindex', '0');
-        wrapper.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                book.classList.toggle('show-back');
-            }
-        });
-    });
-
-    // header scroll effect (keep your original)
-    window.addEventListener('scroll', () => {
-        const header = document.getElementById('header');
-        if (window.scrollY > 50) header.classList.add('scrolled');
-        else header.classList.remove('scrolled');
-    });
-})();
+})(); 
 
 
 // Simple cart and add-to-cart functionality (localStorage)------------------------------------------------
