@@ -369,6 +369,10 @@ header.scrolled {
     cursor: pointer;
 }
 
+.book-wrapper {
+    touch-action: pan-y;
+}
+
 .book {
     width: 100%;
     height: 100%;

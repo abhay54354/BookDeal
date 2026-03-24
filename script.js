@@ -117,24 +117,26 @@
         heroShelf.addEventListener('mouseleave', () => { autoplay = setInterval(next, 4200); });
 
         // Touch swipe support for mobile: detect horizontal swipes
-        let startX = 0;
-        let endX = 0;
-
         wrappers.forEach(wrapper => {
             const book = wrapper.querySelector('.book');
             if (!book) return;
 
+            let startX = 0;
+            let startY = 0;
+
             wrapper.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-            });
+                const touch = e.touches[0];
+                startX = touch.clientX;
+                startY = touch.clientY;
+            }, { passive: true });
 
             wrapper.addEventListener('touchend', (e) => {
-                endX = e.changedTouches[0].clientX;
+                const touch = e.changedTouches[0];
+                let diffX = touch.clientX - startX;
+                let diffY = touch.clientY - startY;
 
-                let diff = endX - startX;
-
-                // swipe threshold (important)
-                if (Math.abs(diff) > 40) {
+                // detect horizontal swipe only
+                if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
                     book.classList.toggle('show-back');
                 }
             });
