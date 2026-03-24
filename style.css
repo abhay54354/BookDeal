@@ -716,6 +716,7 @@ h2 {
         overflow: hidden;
         width: 100vw;
         margin-left: -24px;
+        touch-action: pan-y;
     }
 
     .shelf-books {

@@ -130,6 +130,40 @@
     if (left) left.addEventListener('click', prev);
     if (right) right.addEventListener('click', next);
 
+    // TOUCH SWIPE SUPPORT
+    let startX = 0;
+    let startY = 0;
+
+    const heroShelf1 = document.querySelector('.hero-shelf');
+
+    if (heroShelf1) {
+
+        heroShelf1.addEventListener('touchstart', (e) => {
+            const t = e.touches[0];
+            startX = t.clientX;
+            startY = t.clientY;
+        }, { passive: true });
+
+        heroShelf1.addEventListener('touchend', (e) => {
+            const t = e.changedTouches[0];
+
+            let diffX = t.clientX - startX;
+            let diffY = t.clientY - startY;
+
+            // horizontal swipe only
+            if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+
+                if (diffX < 0) {
+                    // swipe left → next book
+                    next();
+                } else {
+                    // swipe right → previous book
+                    prev();
+                }
+            }
+        });
+    }
+
     // keyboard
     window.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') prev();
@@ -143,7 +177,7 @@
         heroShelf.addEventListener('mouseenter', () => clearInterval(autoplay));
         heroShelf.addEventListener('mouseleave', () => { autoplay = setInterval(next, 4200); });
     }
-})(); 
+})();
 
 
 // Simple cart and add-to-cart functionality (localStorage)------------------------------------------------
