@@ -116,30 +116,37 @@
         heroShelf.addEventListener('mouseenter', () => clearInterval(autoplay));
         heroShelf.addEventListener('mouseleave', () => { autoplay = setInterval(next, 4200); });
 
-        // Touch swipe support for mobile: detect horizontal swipes
-        wrappers.forEach(wrapper => {
-            const book = wrapper.querySelector('.book');
-            if (!book) return;
+        // Touch swipe support for mobile: detect horizontal swipes on the shelf
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchDeltaX = 0;
+        const SWIPE_THRESHOLD = 40; // pixels
 
-            let startX = 0;
-            let startY = 0;
+        heroShelf.addEventListener('touchstart', (e) => {
+            if (e.touches && e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                touchDeltaX = 0;
+                clearInterval(autoplay);
+            }
+        }, { passive: true });
 
-            wrapper.addEventListener('touchstart', (e) => {
-                const touch = e.touches[0];
-                startX = touch.clientX;
-                startY = touch.clientY;
-            }, { passive: true });
+        heroShelf.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches.length === 1) {
+                touchDeltaX = e.touches[0].clientX - touchStartX;
+            }
+        }, { passive: true });
 
-            wrapper.addEventListener('touchend', (e) => {
-                const touch = e.changedTouches[0];
-                let diffX = touch.clientX - startX;
-                let diffY = touch.clientY - startY;
-
-                // detect horizontal swipe only
-                if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
-                    book.classList.toggle('show-back');
-                }
-            });
+        heroShelf.addEventListener('touchend', (e) => {
+            const deltaX = touchDeltaX;
+            const touch = (e.changedTouches && e.changedTouches[0]);
+            const deltaY = touch ? Math.abs(touch.clientY - touchStartY) : 0;
+            if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaY < 80) {
+                if (deltaX > 0) prev(); else next();
+            }
+            // restart autoplay after interaction
+            clearInterval(autoplay);
+            autoplay = setInterval(next, 4200);
         });
     }
 })();
