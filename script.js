@@ -109,46 +109,61 @@
         if (e.key === 'ArrowRight') next();
     });
 
-    // autoplay (pause on hover / touch)
+    // autoplay (pause on hover)
     let autoplay = setInterval(next, 4200);
     const heroShelf = document.querySelector('.hero-shelf');
     if (heroShelf) {
         heroShelf.addEventListener('mouseenter', () => clearInterval(autoplay));
         heroShelf.addEventListener('mouseleave', () => { autoplay = setInterval(next, 4200); });
-
-        // Touch swipe support for mobile: detect horizontal swipes on the shelf
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchDeltaX = 0;
-        const SWIPE_THRESHOLD = 40; // pixels
-
-        heroShelf.addEventListener('touchstart', (e) => {
-            if (e.touches && e.touches.length === 1) {
-                touchStartX = e.touches[0].clientX;
-                touchStartY = e.touches[0].clientY;
-                touchDeltaX = 0;
-                clearInterval(autoplay);
-            }
-        }, { passive: true });
-
-        heroShelf.addEventListener('touchmove', (e) => {
-            if (e.touches && e.touches.length === 1) {
-                touchDeltaX = e.touches[0].clientX - touchStartX;
-            }
-        }, { passive: true });
-
-        heroShelf.addEventListener('touchend', (e) => {
-            const deltaX = touchDeltaX;
-            const touch = (e.changedTouches && e.changedTouches[0]);
-            const deltaY = touch ? Math.abs(touch.clientY - touchStartY) : 0;
-            if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaY < 80) {
-                if (deltaX > 0) prev(); else next();
-            }
-            // restart autoplay after interaction
-            clearInterval(autoplay);
-            autoplay = setInterval(next, 4200);
-        });
     }
+})();
+
+(function () {
+    const wrappers = document.querySelectorAll('.book-wrapper');
+
+    wrappers.forEach(wrapper => {
+        const book = wrapper.querySelector('.book');
+        if (!book) return;
+
+        let startX = 0;
+        let startY = 0;
+
+        // TOUCH START
+        wrapper.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+        }, { passive: true });
+
+        // TOUCH END
+        wrapper.addEventListener('touchend', (e) => {
+            const touch = e.changedTouches[0];
+
+            let diffX = touch.clientX - startX;
+            let diffY = touch.clientY - startY;
+
+            // only horizontal swipe
+            if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+                book.classList.toggle('show-back');
+            }
+        });
+
+        // OPTIONAL: keyboard support (desktop)
+        wrapper.setAttribute('tabindex', '0');
+        wrapper.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                book.classList.toggle('show-back');
+            }
+        });
+    });
+
+    // header scroll effect (keep your original)
+    window.addEventListener('scroll', () => {
+        const header = document.getElementById('header');
+        if (window.scrollY > 50) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+    });
 })();
 
 
